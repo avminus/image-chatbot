@@ -21,6 +21,7 @@
 resources/
 
 #secret/keys
-keys/
+keys/keys.txt
+
 # Go workspace file
 go.work
