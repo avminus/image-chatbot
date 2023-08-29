@@ -1,30 +1,52 @@
-LLM powered Chatbot with Image Upload Download Capability
-About
+# LLM powered Chatbot
+
+## About
+
 A project to provides API to enable LLM powered chat functionality and also serve capability of upload and downloading image.
 
-Tech Stack
-Server built on GoLang using Gorilla Mux and Cohere AI package
-LLM model used: Cohere.ai | API : https://docs.cohere.com/reference/generate
-Image is stored locally in memory
+
+## Tech Stack
+
+- Server built on GoLang using Gorilla Mux and Cohere AI package
+- LLM model used: Cohere.ai | API : https://docs.cohere.com/reference/generate
+- Image is stored locally in memory (to keep things simple)
+
+#
+**NOTE: Please put your Cohere API Key before running this project**
 
 
-To build and start the project in dev mode locally
-First, create a file with name (& ext) keys.txt  in keys/ directory your cohere api key 
+## To build and start the project in dev mode locally
+_First, create a file with name (& ext) keys.txt  in keys/ directory and put your <Cohere-api-key> into it_ <br><br>
 
-Run the following cmd from the main/ directory :
+Run the following cmd from the main/ directory : 
 
-go run main.go
+1. ```go run main.go```
 
 
-API Documentation:
+![](/screeshots/preview.png)
+<br>
+_More Screenshots present in screenshots dir inside this project_
 
-GET                 /getAllMessages?pNo={p_no}&pSize={p_size}
-Description:        Fetches all the messages with metadata like role, message id, message type in reverse chronological order
-Query Parameters:   pNo, pSize denoting page number and page size for paginated response
-Response:           List of messages with metadata in reverse chornological order
+## API Documentation:
 
-Sample Request:     /getAllMessages?pNo=1&pSize=10
-Sample Response:
+### Endpoints:
+
+GET
+```http request
+/getAllMessages?pNo={P_NO}&pSize={P_SIZE}
+```
+**Description** : Fetches all the messages with metadata like role, message id, message type in reverse chronological order <br>
+**Query Parameters** : pNo, pSize denoting page number and page size for paginated response <br>
+**Response** : List of messages with metadata in reverse chornological order <br>  
+
+### Sample Request
+```shell script
+curl --location --request GET 'localhost:8000/getAllMessages?pNo=1&pSize=10' \
+--header 'Content-Type: application/json'
+```
+
+### Sample Response
+```json
 {
     "status": true,
     "data": {
@@ -46,41 +68,66 @@ Sample Response:
         ]
     }
 }
+```
 
-GET                 /image/{id}
-Description:        Downloads the image with given image id 
-Path Parameters:    id -> gives id for the corresponding image to fetch
-Response:           image file
+GET
+```http request
+/image/{id}
+```
+**Description** : Downloads the image with given image id  <br>
+**Path Parameters** : id -> gives id for the corresponding image to fetch <br>
+**Response** : Image file <br>  
 
-Sample Request:     /image/e8b38dee-ab6c-476b-8117-0cfbe40e747b
-Sample Response:    
+### Sample Request
+```shell script
+curl --location --request GET 'localhost:8000/image/e8b38dee-ab6c-476b-8117-0cfbe40e747b' \
+--header 'Content-Type: application/json'
+```
+
+### Sample Response
 
 
-POST                /image
-Description         Uploads the image 
-Response:           Success/Failure message
+POST
+```http request
+/image
+```
+**Description** : Uploads the image <br>
+**Response** : Success/Failure denoting response string <br>  
 
-Sample Request:     /image
-Sample Response:    "Image Uploaded Successfully!"
+### Sample Request and Response
+![Screenshot 2023-08-29 at 10 39 46 PM](https://github.com/avminus/image-chatbot/assets/35273797/82a3dda2-dd7c-43f8-b755-d9bb12898d93)
 
+POST
+```http request
+/message
+```
+**Description** : Sends message as chat to the llm powered bot to recieve a response of text <br>
+**Response** : Reply from LLM bot for the given prompt <br>  
 
-POST                /message
-Description:        Sends message as chat to the llm powered bot to recieve a response of text
-Response:           Reply from LLM bot
+### Sample Request
+```shell script
+curl --location --request POST 'localhost:8000/message' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "message": "name top 5 countries with highest GDPs"
+}'
 
-Sample Request:     /message
-Request Body:
+```
+### Request Body
+```json
 {
     "message" : "what are the three laws of motion"
 }
+```
 
-Sample Response:
-
+### Sample Response
+```json
 {
     "status": true,
     "data": [
         {
-            "message": " The three laws of motion are the fundamental principles of how objects move and interact with each other. These laws are:\n\n1. The law of acceleration: This law states that an object will accelerate in the direction of its velocity. This means that if an object is moving in a straight line, it will accelerate in that line.\n\n2. The law of action-reaction: This law states that an object will always move in response to an external force acting on it. This means that if an object is being acted on by a force, it will move in response to that force.\n\n3. The law of conservation of momentum: This law states that the total momentum of a system is always conserved. This means that the total momentum of an object and its surrounding objects will always remain the same.\n\nThese laws are fundamental to understanding how objects move and interact with each other. They are used to explain a wide range of phenomena, from the behavior of planets and stars to the operation of machines and devices."
+            "message": " The countries with the highest GDPs are the United States, China, India, Germany, and Japan. Here are some more countries with high GDPs:\n\n- Italy\n- Canada\n- Mexico\n- South Korea\n- Brazil\n\nThese countries have high GDPs because they have a large number of industries, high population, and high consumption."
         }
     ]
 }
+```
