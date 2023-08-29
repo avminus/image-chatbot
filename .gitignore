@@ -19,5 +19,8 @@
 
 #Image resource
 resources/
+
+#secret/keys
+keys/
 # Go workspace file
 go.work
