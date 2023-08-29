@@ -2,19 +2,19 @@ package client
 
 import (
 	"fmt"
+	"image-chatbot/utils"
+	"io/ioutil"
+	"log"
 
 	"github.com/cohere-ai/cohere-go"
-)
-
-const (
-	cohereAPIKey     = "En7bqXcgFqg6sjK9THezT9Btopd0VYRp9q9FpL88"
-	endPointGenerate = "generate"
 )
 
 var (
 	maxTokens   uint    = 300
 	temperature float64 = 0.9
 )
+
+const KEYS_DIRECTORY = "/keys/"
 
 func GenerateText(prompt string) (string, error) {
 	options := cohere.GenerateOptions{
@@ -25,7 +25,18 @@ func GenerateText(prompt string) (string, error) {
 		StopSequences:     []string{},
 		ReturnLikelihoods: "NONE",
 	}
-	cohereClient, err := cohere.CreateClient(cohereAPIKey)
+
+	keysFilePath, err := utils.GetPath("cohere_key.txt", KEYS_DIRECTORY)
+	if err != nil {
+		return "", fmt.Errorf("error in getting the keys path: %v", err)
+	}
+
+	key, err := ioutil.ReadFile(keysFilePath)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	cohereClient, err := cohere.CreateClient(string(key))
 	if err != nil {
 		return "", fmt.Errorf("error in ai client creation: %v", err)
 	}

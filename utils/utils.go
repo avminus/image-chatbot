@@ -9,8 +9,6 @@ import (
 	"path/filepath"
 )
 
-const IMAGE_DIRECTORY = "/resources/images/"
-
 func ImageSupported(format string) bool {
 	switch format {
 	case "image/jpeg":
@@ -24,13 +22,13 @@ func ImageSupported(format string) bool {
 	}
 }
 
-func GetImagePath(imageId string) (string, error) {
+func GetPath(fileName, directoryPath string) (string, error) {
 	wd, err := os.Getwd()
 	if err != nil {
 		return "", fmt.Errorf("Error in getting current directory: %v", err)
 	}
 
-	return filepath.Dir(wd) + IMAGE_DIRECTORY + imageId, nil
+	return filepath.Dir(wd) + directoryPath + fileName, nil
 }
 
 func ParseImageMessage(r *http.Request, msg *structs.Message) error {

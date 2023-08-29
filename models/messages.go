@@ -12,10 +12,13 @@ import (
 	"github.com/google/uuid"
 )
 
+const (
+	IMAGE_DIRECTORY = "/resources/images/"
+)
+
 func GetImageById(imageId string) (*structs.ImageMessage, error) {
 
-	// fmt.Println("image location: ", imagePath)
-	imagePath, err := utils.GetImagePath(imageId)
+	imagePath, err := utils.GetPath(imageId, IMAGE_DIRECTORY)
 	if err != nil {
 		return nil, fmt.Errorf("error in getting the file path: %v", err)
 	}
@@ -42,7 +45,7 @@ func UploadImage(image *structs.Message) error {
 	imageID := uuid.New().String()
 	image.Id = imageID
 
-	filepath, err := utils.GetImagePath(imageID)
+	filepath, err := utils.GetPath(imageID, IMAGE_DIRECTORY)
 
 	if err != nil {
 		return fmt.Errorf("error in getting the file path: %v", err)
