@@ -12,8 +12,10 @@ A project to provides API to enable LLM powered chat functionality and also serv
 - Image is stored locally in memory (to keep things simple)
 
 #
-**NOTE: Please put your Cohere API Key before running this project**
-
+**NOTE: Please put your Cohere API Key before running this project **
+#
+**Prerequisite: Please setup your local environment by installing go. Reference: https://go.dev/doc/install **
+#
 
 ## To build and start the project in dev mode locally
 _First, create a file with name (& ext) keys.txt  in keys/ directory and put your <Cohere-api-key> into it_ <br><br>
